@@ -27,3 +27,7 @@ export {
   createRandomSpaceConfig 
 } from './lib/scramble'
 export type { CharacterSet, Language, RandomSpaceConfig } from './lib/scramble'
+
+// Attribute-based API
+export { Scrimr as ScrimrAPI } from './lib/scrimr-api'
+export type { ScrimrAttributeOptions, ScrimrElementState } from './lib/scrimr-api'
