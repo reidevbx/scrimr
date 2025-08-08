@@ -1,0 +1,32 @@
+# Source files
+src/
+demo/
+
+# Config files
+tsconfig.json
+tsup.config.ts
+example.tsx
+
+# Development
+node_modules/
+.npm/
+*.log
+.DS_Store
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+*.md.bak
+
+# Keep only essential files
+!README.md
+!USAGE.md
+!LICENSE

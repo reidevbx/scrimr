@@ -95,7 +95,7 @@ export function completeElement(element: HTMLElement, finalText?: string): boole
   const state = activeElements.get(element)
   if (!state) return false
 
-  const targetText = finalText || state.originalContent
+  const targetText = finalText || state.originalContent || ''
   
   // Mark as not loading
   state.isActive = false
