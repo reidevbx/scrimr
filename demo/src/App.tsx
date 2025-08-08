@@ -4,6 +4,7 @@ import {
   ScrimrText, 
   ScrimrButton, 
   ScrimrCard,
+  ScrimrAPI,
   type TransitionEffect,
   type CharacterSet,
   type FontFamily
@@ -76,6 +77,45 @@ function InteractivePlayground() {
                       {text}
                     </Scrimr>
                   </div>
+                </div>
+              </div>
+
+              {/* Attribute API Demo */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <h3 className="text-sm font-bold text-blue-800 mb-2">🆕 屬性 API 示範</h3>
+                <p className="text-xs text-blue-600 mb-3">使用 data-scrimr 屬性直接在 HTML 元素上啟用效果</p>
+                <div className="space-y-2">
+                  <p 
+                    data-scrimr="true"
+                    data-scrimr-min-length={minLength}
+                    data-scrimr-max-length={maxLength}
+                    data-scrimr-random-spaces={randomSpaces}
+                    data-scrimr-character-set={characterSet}
+                    data-scrimr-shimmer-colors={JSON.stringify(shimmerColors)}
+                    data-scrimr-shimmer-speed={shimmerSpeed}
+                    data-scrimr-scramble-interval={scrambleInterval}
+                    data-scrimr-font-family={fontFamily}
+                    className="font-medium text-blue-800"
+                  >
+                    屬性 API 測試文字
+                  </p>
+                  <code className="text-xs bg-blue-100 px-2 py-1 rounded block">
+                    {"<p data-scrimr=\"true\" data-scrimr-min-length=\"10\">文字</p>"}
+                  </code>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() => ScrimrAPI.init()}
+                    className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white text-xs rounded"
+                  >
+                    重新初始化
+                  </button>
+                  <button
+                    onClick={() => ScrimrAPI.destroyAll()}
+                    className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white text-xs rounded"
+                  >
+                    清除所有
+                  </button>
                 </div>
               </div>
 
@@ -452,8 +492,12 @@ function InteractivePlayground() {
                 {/* Code Preview */}
                 <div className="border-t pt-6">
                   <h3 className="text-sm font-medium mb-2">程式碼預覽</h3>
-                  <pre className="bg-gray-100 p-4 rounded-lg text-xs overflow-x-auto">
-                    <code>{`<Scrimr
+                  
+                  {/* Component API */}
+                  <div className="mb-4">
+                    <h4 className="text-xs font-medium text-gray-600 mb-2">🔸 組件 API</h4>
+                    <pre className="bg-gray-100 p-3 rounded text-xs overflow-x-auto">
+                      <code>{`<Scrimr
   isLoading={${isLoading}}
   text="${text}"
   minLength={${minLength}}
@@ -469,7 +513,32 @@ function InteractivePlayground() {
 >
   {children}
 </Scrimr>`}</code>
-                  </pre>
+                    </pre>
+                  </div>
+
+                  {/* Attribute API */}
+                  <div>
+                    <h4 className="text-xs font-medium text-gray-600 mb-2">🔸 屬性 API</h4>
+                    <pre className="bg-gray-100 p-3 rounded text-xs overflow-x-auto">
+                      <code>{`<p 
+  data-scrimr="true"
+  data-scrimr-min-length="${minLength}"
+  data-scrimr-max-length="${maxLength}"
+  data-scrimr-random-spaces="${randomSpaces}"
+  data-scrimr-character-set="${characterSet}"
+  data-scrimr-shimmer-colors='${JSON.stringify(shimmerColors)}'
+  data-scrimr-shimmer-speed="${shimmerSpeed}"
+  data-scrimr-scramble-interval="${scrambleInterval}"
+  data-scrimr-font-family="${fontFamily}"
+>
+  您的內容
+</p>
+
+// JavaScript 初始化
+import { ScrimrAPI } from 'scrimr'
+ScrimrAPI.init() // 自動掃描並初始化`}</code>
+                    </pre>
+                  </div>
                 </div>
               </div>
             </div>
