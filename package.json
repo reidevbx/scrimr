@@ -1,18 +1,41 @@
 {
   "name": "scrimr",
-  "version": "0.1.0",
-  "description": "A loading effect component that replaces skeleton screens with scrambled text",
+  "version": "1.0.0",
+  "description": "🎲 A React loading component that replaces skeleton screens with dynamic scrambled text and shimmer effects. Features dual API (components + attributes) with 3-parameter simplicity.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm run type-check"
   },
-  "keywords": ["react", "loading", "skeleton", "shimmer", "animation", "shadcn"],
-  "author": "",
+  "keywords": [
+    "react", 
+    "loading", 
+    "skeleton", 
+    "shimmer", 
+    "animation", 
+    "shadcn", 
+    "typescript",
+    "scrambled-text",
+    "loading-effect",
+    "ui-components",
+    "tailwindcss",
+    "accessibility",
+    "dual-api"
+  ],
+  "author": "Rei Huang",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reihuang/scrimr.git"
+  },
+  "homepage": "https://github.com/reihuang/scrimr#readme",
+  "bugs": {
+    "url": "https://github.com/reihuang/scrimr/issues"
+  },
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"

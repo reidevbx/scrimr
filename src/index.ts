@@ -1,6 +1,6 @@
 // Core component
 export { Scrimr } from './components/Scrimr'
-export type { ScrimrProps, TransitionEffect, FontFamily } from './components/Scrimr'
+export type { ScrimrProps, TransitionEffect, FontFamily, LengthMode } from './components/Scrimr'
 
 // Specialized components
 export { ScrimrText } from './components/ScrimrText'

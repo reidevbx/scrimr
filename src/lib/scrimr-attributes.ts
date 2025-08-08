@@ -1,4 +1,4 @@
-import { type TransitionEffect, type FontFamily } from '../components/Scrimr'
+import { type TransitionEffect, type FontFamily, type LengthMode } from '../components/Scrimr'
 import { type CharacterSet } from './scramble'
 
 export interface ScrimrAttributeOptions {
@@ -6,6 +6,10 @@ export interface ScrimrAttributeOptions {
   minLength?: number
   maxLength?: number
   randomSpaces?: boolean
+  
+  // Length control mode
+  lengthMode?: LengthMode
+  lengthChangeInterval?: number
   
   // Basic settings
   characterSet?: CharacterSet
@@ -31,8 +35,10 @@ export interface ScrimrElementState {
   element: HTMLElement
   originalContent: string
   originalClasses: string
-  options: ScrimrAttributeOptions
+  options: Required<ScrimrAttributeOptions>
   intervalId?: ReturnType<typeof setInterval>
+  lengthChangeIntervalId?: ReturnType<typeof setInterval>
+  currentDisplayLength?: number
   isActive: boolean
 }
 
@@ -57,6 +63,10 @@ export function parseScrimrAttributes(element: HTMLElement): ScrimrAttributeOpti
   if (dataset.scrimrMinLength) options.minLength = parseInt(dataset.scrimrMinLength, 10)
   if (dataset.scrimrMaxLength) options.maxLength = parseInt(dataset.scrimrMaxLength, 10)
   if (dataset.scrimrRandomSpaces) options.randomSpaces = dataset.scrimrRandomSpaces === 'true'
+  
+  // Length control mode parameters
+  if (dataset.scrimrLengthMode) options.lengthMode = dataset.scrimrLengthMode as LengthMode
+  if (dataset.scrimrLengthChangeInterval) options.lengthChangeInterval = parseInt(dataset.scrimrLengthChangeInterval, 10)
 
   // Basic settings
   if (dataset.scrimrCharacterSet) options.characterSet = dataset.scrimrCharacterSet as CharacterSet
@@ -98,6 +108,10 @@ export function applyDefaultOptions(options: ScrimrAttributeOptions): Required<S
     minLength: options.minLength ?? 10,
     maxLength: options.maxLength ?? 30,
     randomSpaces: options.randomSpaces ?? false,
+    
+    // Length control defaults
+    lengthMode: options.lengthMode ?? 'content',
+    lengthChangeInterval: options.lengthChangeInterval ?? 150,
     
     // Basic defaults
     characterSet: options.characterSet ?? 'alphanumeric',

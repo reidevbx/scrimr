@@ -12,6 +12,8 @@ export type TransitionEffect = 'instant' | 'fade' | 'typewriter' | 'decode'
 
 export type FontFamily = 'mono' | 'sans' | 'serif' | 'system'
 
+export type LengthMode = 'content' | 'dynamic'
+
 export interface ScrimrProps {
   className?: string
   children?: React.ReactNode
@@ -21,6 +23,9 @@ export interface ScrimrProps {
   minLength?: number
   maxLength?: number
   randomSpaces?: boolean
+  // Length control mode
+  lengthMode?: LengthMode
+  lengthChangeInterval?: number
   // Keep essential existing props
   characterSet?: CharacterSet | CharacterSet[]
   scrambleInterval?: number
@@ -44,6 +49,9 @@ export const Scrimr: React.FC<ScrimrProps> = ({
   minLength = 10,
   maxLength = 30,
   randomSpaces = false,
+  // Length control mode
+  lengthMode = 'content',
+  lengthChangeInterval = 150,
   // Essential props
   characterSet = 'alphanumeric',
   scrambleInterval = 50,
@@ -59,16 +67,42 @@ export const Scrimr: React.FC<ScrimrProps> = ({
 }) => {
   const finalText = text || (typeof children === 'string' ? children : '')
   
-  // Calculate display length - ALWAYS use minLength/maxLength range for shimmer control
-  const displayLength = useMemo(() => {
-    // Always generate random length between min and max for shimmer effect
-    return Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength
-  }, [minLength, maxLength])
-  
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [displayText, setDisplayText] = useState('')
+  const [displayLength, setDisplayLength] = useState(() => {
+    if (lengthMode === 'content') {
+      return finalText.length || maxLength
+    } else {
+      // Dynamic mode - start with random length
+      return Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength
+    }
+  })
+  
   const scrambleIntervalRef = useRef<ReturnType<typeof setInterval>>()
   const transitionIntervalRef = useRef<ReturnType<typeof setInterval>>()
+  const lengthChangeIntervalRef = useRef<ReturnType<typeof setInterval>>()
+  
+  // Handle length changes for dynamic mode
+  useEffect(() => {
+    if (lengthMode === 'content') {
+      // Content mode - use finalText length or maxLength as fallback
+      setDisplayLength(finalText.length || maxLength)
+    } else if (lengthMode === 'dynamic' && isLoading && lengthChangeInterval > 0) {
+      // Dynamic mode - continuously change length during loading
+      lengthChangeIntervalRef.current = setInterval(() => {
+        if (!isTransitioning) {
+          const newLength = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength
+          setDisplayLength(newLength)
+        }
+      }, lengthChangeInterval)
+      
+      return () => {
+        if (lengthChangeIntervalRef.current) {
+          clearInterval(lengthChangeIntervalRef.current)
+        }
+      }
+    }
+  }, [lengthMode, finalText.length, maxLength, minLength, lengthChangeInterval, isLoading, isTransitioning])
   
   // Generate initial scrambled text
   useEffect(() => {
@@ -176,6 +210,21 @@ export const Scrimr: React.FC<ScrimrProps> = ({
       }
     }
   }, [isLoading, finalText, transitionEffect, transitionDuration, characterSet])
+  
+  // Cleanup all intervals on unmount
+  useEffect(() => {
+    return () => {
+      if (scrambleIntervalRef.current) {
+        clearInterval(scrambleIntervalRef.current)
+      }
+      if (transitionIntervalRef.current) {
+        clearInterval(transitionIntervalRef.current)
+      }
+      if (lengthChangeIntervalRef.current) {
+        clearInterval(lengthChangeIntervalRef.current)
+      }
+    }
+  }, [])
   
   // Shimmer gradient with smooth transitions
   const shimmerGradient = useMemo(() => {

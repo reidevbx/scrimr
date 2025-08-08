@@ -2,8 +2,7 @@ import {
   generateScrambledText, 
   generateScrambledTextWithSpaces,
   scrambleCharacter,
-  createRandomSpaceConfig,
-  type CharacterSet
+  createRandomSpaceConfig
 } from './scramble'
 import type { ScrimrElementState } from './scrimr-attributes'
 
@@ -103,11 +102,21 @@ export function applyFontStyles(element: HTMLElement, fontFamily: string): void 
 /**
  * Generate scrambled text for element
  */
-export function generateElementScrambledText(state: ScrimrElementState): string {
+export function generateElementScrambledText(state: ScrimrElementState, dynamicLength?: number): string {
   const { options } = state
   
-  // Calculate display length
-  const displayLength = Math.floor(Math.random() * (options.maxLength! - options.minLength! + 1)) + options.minLength!
+  // Calculate display length based on mode
+  let displayLength: number
+  if (dynamicLength !== undefined) {
+    // Use provided dynamic length (from React component)
+    displayLength = dynamicLength
+  } else if (options.lengthMode === 'content') {
+    // Content mode - use original content length or maxLength as fallback
+    displayLength = state.originalContent?.length || options.maxLength!
+  } else {
+    // Dynamic mode - random length between min and max
+    displayLength = Math.floor(Math.random() * (options.maxLength! - options.minLength! + 1)) + options.minLength!
+  }
   
   if (options.randomSpaces) {
     return generateScrambledTextWithSpaces(displayLength, options.characterSet!, createRandomSpaceConfig())
@@ -125,15 +134,35 @@ export function startScrambleAnimation(state: ScrimrElementState): void {
   if (state.intervalId) {
     clearInterval(state.intervalId)
   }
+  
+  if (state.lengthChangeIntervalId) {
+    clearInterval(state.lengthChangeIntervalId)
+  }
+
+  // Initialize current display length
+  if (options.lengthMode === 'content') {
+    state.currentDisplayLength = state.originalContent?.length || options.maxLength
+  } else {
+    state.currentDisplayLength = Math.floor(Math.random() * (options.maxLength - options.minLength + 1)) + options.minLength
+  }
 
   // Set initial scrambled text
-  element.textContent = generateElementScrambledText(state)
+  element.textContent = generateElementScrambledText(state, state.currentDisplayLength)
+
+  // Start dynamic length changing if in dynamic mode
+  if (options.lengthMode === 'dynamic' && options.lengthChangeInterval > 0) {
+    state.lengthChangeIntervalId = setInterval(() => {
+      if (state.isActive) {
+        state.currentDisplayLength = Math.floor(Math.random() * (options.maxLength - options.minLength + 1)) + options.minLength
+      }
+    }, options.lengthChangeInterval)
+  }
 
   // Start scramble interval
-  if (options.scrambleInterval! > 0) {
+  if (options.scrambleInterval > 0) {
     state.intervalId = setInterval(() => {
       if (state.isActive) {
-        element.textContent = generateElementScrambledText(state)
+        element.textContent = generateElementScrambledText(state, state.currentDisplayLength)
       }
     }, options.scrambleInterval)
   }
@@ -146,6 +175,11 @@ export function stopScrambleAnimation(state: ScrimrElementState): void {
   if (state.intervalId) {
     clearInterval(state.intervalId)
     state.intervalId = undefined
+  }
+  
+  if (state.lengthChangeIntervalId) {
+    clearInterval(state.lengthChangeIntervalId)
+    state.lengthChangeIntervalId = undefined
   }
 }
 

@@ -7,7 +7,8 @@ import {
   ScrimrAPI,
   type TransitionEffect,
   type CharacterSet,
-  type FontFamily
+  type FontFamily,
+  type LengthMode
 } from '../../src'
 
 // Interactive Playground Component
@@ -18,6 +19,10 @@ function InteractivePlayground() {
   const [minLength, setMinLength] = useState(10)
   const [maxLength, setMaxLength] = useState(30)
   const [randomSpaces, setRandomSpaces] = useState(false)
+  
+  // Length mode controls
+  const [lengthMode, setLengthMode] = useState<LengthMode>('content')
+  const [lengthChangeInterval, setLengthChangeInterval] = useState(150)
   
   // Basic controls
   const [characterSet, setCharacterSet] = useState<CharacterSet>('alphanumeric')
@@ -65,6 +70,8 @@ function InteractivePlayground() {
                       minLength={minLength}
                       maxLength={maxLength}
                       randomSpaces={randomSpaces}
+                      lengthMode={lengthMode}
+                      lengthChangeInterval={lengthChangeInterval}
                       characterSet={characterSet}
                       transitionEffect={transitionEffect}
                       enableShimmer={enableShimmer}
@@ -90,6 +97,8 @@ function InteractivePlayground() {
                     data-scrimr-min-length={minLength}
                     data-scrimr-max-length={maxLength}
                     data-scrimr-random-spaces={randomSpaces}
+                    data-scrimr-length-mode={lengthMode}
+                    data-scrimr-length-change-interval={lengthChangeInterval}
                     data-scrimr-character-set={characterSet}
                     data-scrimr-shimmer-colors={JSON.stringify(shimmerColors)}
                     data-scrimr-shimmer-speed={shimmerSpeed}
@@ -242,25 +251,78 @@ function InteractivePlayground() {
                 <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
                   <h3 className="text-sm font-bold text-blue-800 mb-4">🎯 核心控制（3個參數解決所有問題）</h3>
                   
-                  {/* Min Length */}
+                  {/* Length Mode */}
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">
-                      minLength（最少字數）: {minLength}
-                    </label>
-                    <input
-                      type="range"
-                      min="1"
-                      max="50"
-                      value={minLength}
-                      onChange={(e) => setMinLength(Number(e.target.value))}
-                      className="w-full"
-                    />
+                    <label className="block text-sm font-medium mb-2">字數模式</label>
+                    <div className="flex gap-2">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="lengthMode"
+                          value="content"
+                          checked={lengthMode === 'content'}
+                          onChange={(e) => setLengthMode(e.target.value as LengthMode)}
+                          className="w-4 h-4 text-blue-600"
+                        />
+                        <span className="text-sm">固定字數（使用內容長度）</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="lengthMode"
+                          value="dynamic"
+                          checked={lengthMode === 'dynamic'}
+                          onChange={(e) => setLengthMode(e.target.value as LengthMode)}
+                          className="w-4 h-4 text-blue-600"
+                        />
+                        <span className="text-sm">動態字數（隨機變化）</span>
+                      </label>
+                    </div>
                   </div>
+                  
+                  {/* Dynamic Mode Controls */}
+                  {lengthMode === 'dynamic' && (
+                    <>
+                      {/* Length Change Interval */}
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium mb-2">
+                          lengthChangeInterval（字數變化間隔）: {lengthChangeInterval}ms
+                        </label>
+                        <input
+                          type="range"
+                          min="50"
+                          max="500"
+                          step="10"
+                          value={lengthChangeInterval}
+                          onChange={(e) => setLengthChangeInterval(Number(e.target.value))}
+                          className="w-full"
+                        />
+                      </div>
+                    </>
+                  )}
+                  
+                  {/* Min Length - Only show in dynamic mode or when minLength < maxLength */}
+                  {lengthMode === 'dynamic' && (
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium mb-2">
+                        minLength（最少字數）: {minLength}
+                      </label>
+                      <input
+                        type="range"
+                        min="1"
+                        max="50"
+                        value={minLength}
+                        onChange={(e) => setMinLength(Number(e.target.value))}
+                        className="w-full"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">動態模式下字數變化的最小值</p>
+                    </div>
+                  )}
 
                   {/* Max Length */}
                   <div className="mb-4">
                     <label className="block text-sm font-medium mb-2">
-                      maxLength（最大字數）: {maxLength}
+                      {lengthMode === 'content' ? 'maxLength（備用字數）' : 'maxLength（最大字數）'}: {maxLength}
                     </label>
                     <input
                       type="range"
@@ -270,6 +332,12 @@ function InteractivePlayground() {
                       onChange={(e) => setMaxLength(Number(e.target.value))}
                       className="w-full"
                     />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {lengthMode === 'content' 
+                        ? '固定模式：當內容為空時使用此長度'
+                        : '動態模式：字數變化的最大值'
+                      }
+                    </p>
                   </div>
 
                   {/* Random Spaces */}

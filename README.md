@@ -1,15 +1,24 @@
 # Scrimr
 
-A React loading effect component that replaces traditional skeleton screens with scrambled text animations, designed to work seamlessly with shadcn/ui.
+[![npm version](https://badge.fury.io/js/scrimr.svg)](https://badge.fury.io/js/scrimr)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
-## Features
+🎲 A React loading component that replaces skeleton screens with **dynamic scrambled text** and **shimmer effects**. Features **dual API** (components + attributes) with **3-parameter simplicity**.
+
+## ✨ Features
 
 - 🎲 **Dynamic Scrambled Text** - Continuously changing random characters during loading
-- ✨ **Shimmer Effect** - Text-based gradient shimmer animation
-- 🎭 **Multiple Transition Effects** - Instant, fade, typewriter, and decode animations
-- 🎨 **shadcn/ui Compatible** - Designed to work with Tailwind CSS and shadcn components
+- ✨ **Shimmer Effect** - Text-based gradient shimmer animation with customizable colors
+- 🔄 **Dual API Support** - Use as React components OR HTML attributes
+- 🎯 **3-Parameter Simplicity** - Control everything with just `minLength`, `maxLength`, `randomSpaces`
+- 🎭 **Multiple Transition Effects** - Instant, fade, typewriter, and decode animations  
+- 🎨 **shadcn/ui Compatible** - Designed to work seamlessly with Tailwind CSS and shadcn components
+- ⚡ **Speed Controls** - Adjust scramble speed and shimmer animation speed
+- 🌈 **Multi-color Gradients** - Support for 1-3 color gradients
 - ♿ **Accessible** - ARIA attributes and screen reader friendly
 - 🎯 **TypeScript Support** - Fully typed for better developer experience
+- 📦 **Zero Config** - Works out of the box with sensible defaults
 
 ## Installation
 
@@ -21,44 +30,95 @@ yarn add scrimr
 pnpm add scrimr
 ```
 
-## Basic Usage
+## 🚀 Quick Start
+
+### Method 1: Component API (React)
 
 ```tsx
 import { Scrimr } from 'scrimr'
 
 function MyComponent() {
   const [isLoading, setIsLoading] = useState(true)
-  const [data, setData] = useState('')
-
-  useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setData('Hello, World!')
-      setIsLoading(false)
-    }, 2000)
-  }, [])
-
+  
   return (
-    <Scrimr isLoading={isLoading}>
-      {data}
+    <Scrimr 
+      isLoading={isLoading}
+      minLength={10}
+      maxLength={20}
+      randomSpaces={true}
+    >
+      Hello, World!
     </Scrimr>
   )
 }
 ```
 
-## Components
+### Method 2: Attribute API (HTML + JS)
 
-### Scrimr (Base Component)
+```html
+<!-- HTML -->
+<p 
+  data-scrimr="true"
+  data-scrimr-min-length="10"
+  data-scrimr-max-length="20" 
+  data-scrimr-random-spaces="true"
+>
+  Hello, World!
+</p>
 
-The core component that handles all scramble animations.
+<script>
+// JavaScript
+import { ScrimrAPI } from 'scrimr'
+ScrimrAPI.init() // Auto-scan and initialize
+</script>
+```
+
+## 🎯 3-Parameter Control
+
+Control everything with just **3 core parameters**:
 
 ```tsx
+<Scrimr 
+  minLength={5}      // Minimum scrambled text length
+  maxLength={25}     // Maximum scrambled text length  
+  randomSpaces={true} // Insert random spaces for realism
+>
+  Your Content
+</Scrimr>
+```
+
+## 📚 API Reference
+
+### 🔸 Component API
+
+#### Scrimr (Base Component)
+
+The core component with **3-parameter simplicity**:
+
+```tsx
+// ✨ Simple - just 3 core parameters
 <Scrimr
   isLoading={true}
-  text="Final text to display"
+  minLength={10}
+  maxLength={30}
+  randomSpaces={false}
+>
+  {children}
+</Scrimr>
+
+// 🎨 Advanced - full customization
+<Scrimr
+  isLoading={true}
+  minLength={15}
+  maxLength={25}
+  randomSpaces={true}
   characterSet="alphanumeric"
   transitionEffect="decode"
   enableShimmer={true}
+  shimmerColors={['#9333ea', '#ec4899']}
+  shimmerSpeed={2}
+  scrambleInterval={50}
+  fontFamily="mono"
 >
   {children}
 </Scrimr>
@@ -104,6 +164,60 @@ Card component for loading states.
   titleLength={25}
   descriptionLength={80}
 />
+```
+
+### 🔹 Attribute API
+
+Use Scrimr with **any HTML element** using data attributes:
+
+```html
+<!-- ✨ Simple - just 3 core parameters -->
+<h1 data-scrimr="true" data-scrimr-min-length="10" data-scrimr-max-length="20">
+  Page Title
+</h1>
+
+<!-- 🎨 Advanced - full customization -->
+<p 
+  data-scrimr="true"
+  data-scrimr-min-length="15"
+  data-scrimr-max-length="25"
+  data-scrimr-random-spaces="true"
+  data-scrimr-character-set="alphanumeric"
+  data-scrimr-shimmer-colors='["#9333ea", "#ec4899"]'
+  data-scrimr-shimmer-speed="2"
+  data-scrimr-scramble-interval="50"
+  data-scrimr-font-family="mono"
+>
+  Content text
+</p>
+
+<!-- 📝 JSON Configuration -->
+<div data-scrimr='{
+  "minLength": 10,
+  "maxLength": 30,
+  "randomSpaces": true,
+  "shimmerColors": ["#10b981", "#34d399"]
+}'>
+  Content
+</div>
+```
+
+#### JavaScript API
+
+```javascript
+import { ScrimrAPI } from 'scrimr'
+
+// Initialize all data-scrimr elements
+ScrimrAPI.init()
+
+// Control specific elements
+ScrimrAPI.initElement('#my-element', { minLength: 10, maxLength: 20 })
+ScrimrAPI.complete('#my-element', 'Final text')
+ScrimrAPI.destroy('#my-element')
+ScrimrAPI.destroyAll()
+
+// Batch operations
+ScrimrAPI.batch('.loading-items', 'init')
 ```
 
 ## Props
