@@ -110,7 +110,7 @@ export function applyDefaultOptions(options: ScrimrAttributeOptions): Required<S
     randomSpaces: options.randomSpaces ?? false,
     
     // Length control defaults
-    lengthMode: options.lengthMode ?? 'content',
+    lengthMode: options.lengthMode ?? 'fixed',
     lengthChangeInterval: options.lengthChangeInterval ?? 150,
     
     // Basic defaults
