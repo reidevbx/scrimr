@@ -12,12 +12,12 @@
     "prepublishOnly": "npm run build && npm run type-check"
   },
   "keywords": [
-    "react", 
-    "loading", 
-    "skeleton", 
-    "shimmer", 
-    "animation", 
-    "shadcn", 
+    "react",
+    "loading",
+    "skeleton",
+    "shimmer",
+    "animation",
+    "shadcn",
     "typescript",
     "scrambled-text",
     "loading-effect",
@@ -30,7 +30,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/reihuang/scrimr.git"
+    "url": "git+https://github.com/reihuang/scrimr.git"
   },
   "homepage": "https://github.com/reihuang/scrimr#readme",
   "bugs": {
