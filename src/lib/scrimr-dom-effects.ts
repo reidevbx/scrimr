@@ -31,8 +31,8 @@ export function applyShimmerStyles(element: HTMLElement, state: ScrimrElementSta
     style.id = 'scrimr-shimmer-styles'
     style.textContent = `
       @keyframes scrimr-shimmer {
-        0% { background-position: -100% 50%; }
-        100% { background-position: 100% 50%; }
+        0% { background-position: 200% 50%; }
+        100% { background-position: -200% 50%; }
       }
       .scrimr-shimmer-active {
         background-clip: text;
