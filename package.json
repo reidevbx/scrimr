@@ -1,6 +1,6 @@
 {
   "name": "scrimr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "🎲 A React loading component that replaces skeleton screens with dynamic scrambled text and shimmer effects. Features dual API (components + attributes) with 3-parameter simplicity.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

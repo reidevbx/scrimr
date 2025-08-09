@@ -7,6 +7,7 @@ import {
   createRandomSpaceConfig,
   type CharacterSet
 } from '../lib/scramble'
+import { generateShimmerGradient } from '../lib/scrimr-dom-effects'
 
 export type TransitionEffect = 'instant' | 'fade' | 'typewriter' | 'decode'
 
@@ -229,11 +230,7 @@ export const Scrimr: React.FC<ScrimrProps> = ({
   // Shimmer gradient with smooth transitions
   const shimmerGradient = useMemo(() => {
     if (!enableShimmer) return undefined
-    
-    // Create seamless gradient with repeated colors for smooth loop
-    const colors = shimmerColors
-    const seamlessColors = [...colors, colors[0]]
-    return `linear-gradient(90deg, ${seamlessColors.join(', ')})`
+    return generateShimmerGradient(shimmerColors)
   }, [enableShimmer, shimmerColors])
   
   const shimmerStyle: React.CSSProperties = enableShimmer ? {
