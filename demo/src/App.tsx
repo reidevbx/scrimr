@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { 
   Scrimr, 
   ScrimrText, 
@@ -9,7 +9,7 @@ import {
   type CharacterSet,
   type FontFamily,
   type LengthMode
-} from '../../src'
+} from 'scrimr'
 
 // Interactive Playground Component
 function InteractivePlayground() {
