@@ -6,6 +6,10 @@
 
 🎲 A React loading component that replaces skeleton screens with **dynamic scrambled text** and **shimmer effects**. Features **dual API** (components + attributes) with **3-parameter simplicity**.
 
+## 🎮 [Live Demo](https://scrimr.vercel.app/)
+
+Experience all features in our interactive playground: [https://scrimr.vercel.app/](https://scrimr.vercel.app/)
+
 ## ✨ Features
 
 - 🎲 **Dynamic Scrambled Text** - Continuously changing random characters during loading
