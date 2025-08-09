@@ -244,12 +244,12 @@ export function APIDataExample() {
           <div className="w-16 h-16 bg-gray-200 rounded-full" />
           <div className="flex-1">
             <h3 className="text-xl font-bold">
-              <Scrimr isLoading={isLoading} length={15}>
+              <Scrimr isLoading={isLoading} maxLength={15}>
                 {userData?.name}
               </Scrimr>
             </h3>
             <p className="text-gray-600">
-              <Scrimr isLoading={isLoading} length={25}>
+              <Scrimr isLoading={isLoading} maxLength={25}>
                 {userData?.email}
               </Scrimr>
             </p>
@@ -258,7 +258,7 @@ export function APIDataExample() {
         
         <div className="border-t pt-4">
           <p className="text-sm font-medium text-gray-700 mb-2">
-            <Scrimr isLoading={isLoading} length={20}>
+            <Scrimr isLoading={isLoading} maxLength={20}>
               {userData?.role}
             </Scrimr>
           </p>
@@ -269,7 +269,7 @@ export function APIDataExample() {
                 <Scrimr 
                   isLoading={isLoading} 
                   characterSet="numbers"
-                  length={2}
+                  maxLength={2}
                 >
                   {userData?.stats.projects}
                 </Scrimr>
@@ -281,7 +281,7 @@ export function APIDataExample() {
                 <Scrimr 
                   isLoading={isLoading} 
                   characterSet="numbers"
-                  length={4}
+                  maxLength={4}
                 >
                   {userData?.stats.commits}
                 </Scrimr>
@@ -293,7 +293,7 @@ export function APIDataExample() {
                 <Scrimr 
                   isLoading={isLoading} 
                   characterSet="numbers"
-                  length={3}
+                  maxLength={3}
                 >
                   {userData?.stats.reviews}
                 </Scrimr>
