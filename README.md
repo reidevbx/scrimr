@@ -77,14 +77,24 @@ ScrimrAPI.init() // Auto-scan and initialize
 </script>
 ```
 
-## 🎯 3-Parameter Control
+## 🎯 Simple Length Control
 
-Control everything with just **3 core parameters**:
-
+### Fixed Length Mode (default)
 ```tsx
 <Scrimr 
-  minLength={5}      // Minimum scrambled text length
-  maxLength={25}     // Maximum scrambled text length  
+  length={15}         // Fixed scrambled text length (default: 10)
+  randomSpaces={true} // Insert random spaces for realism
+>
+  Your Content
+</Scrimr>
+```
+
+### Dynamic Length Mode
+```tsx
+<Scrimr 
+  lengthMode="dynamic"
+  minLength={5}       // Minimum scrambled text length
+  maxLength={25}      // Maximum scrambled text length  
   randomSpaces={true} // Insert random spaces for realism
 >
   Your Content
@@ -232,8 +242,8 @@ ScrimrAPI.batch('.loading-items', 'init')
 |------|------|---------|-------------|
 | `isLoading` | `boolean` | `true` | Controls loading state |
 | `text` | `string` | - | Final text to display |
-| `length` | `number` | - | Length of scrambled text (or max length in dynamic mode) |
-| `lengthMode` | `LengthMode` | `'content'` | Length control mode |
+| `length` | `number` | `10` | Fixed length for scrambled text (default: 10) |
+| `lengthMode` | `LengthMode` | `'fixed'` | Length control mode |
 | `minLength` | `number` | `1` | Minimum length for dynamic mode |
 | `lengthChangeInterval` | `number` | `150` | Length change interval in ms (dynamic mode) |
 | `characterSet` | `CharacterSet` | `'alphanumeric'` | Character pool for scrambling |
@@ -266,8 +276,8 @@ ScrimrAPI.batch('.loading-items', 'init')
 
 ### Length Modes
 
-- `'content'` - Fixed length based on content (default)
-- `'dynamic'` - Length randomly jumps between `minLength` and final length
+- `'fixed'` - Fixed length (default: 10 characters, customizable)
+- `'dynamic'` - Length randomly jumps between `minLength` and `maxLength`
 
 ### Display Variants
 
@@ -379,18 +389,20 @@ function UserProfile() {
 ### Length Mode Examples
 
 ```tsx
-{/* Content mode - fixed length */}
+{/* Fixed mode - uses fixed length (default: 10) */}
 <Scrimr 
-  lengthMode="content"
+  lengthMode="fixed"
+  length={15}  // Custom fixed length
   isLoading={isLoading}
 >
-  Fixed Length Text
+  Your Content Here
 </Scrimr>
 
 {/* Dynamic mode - jumping length */}
 <Scrimr 
   lengthMode="dynamic"
   minLength={3}
+  maxLength={20}  // Maximum length for dynamic mode
   lengthChangeInterval={120}
   isLoading={isLoading}
 >
@@ -401,6 +413,7 @@ function UserProfile() {
 <Scrimr 
   lengthMode="dynamic"
   minLength={1}
+  maxLength={8}
   lengthChangeInterval={80}
   characterSet="numbers"
   isLoading={isLoading}

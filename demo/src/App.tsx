@@ -21,7 +21,7 @@ function InteractivePlayground() {
   const [randomSpaces, setRandomSpaces] = useState(false)
   
   // Length mode controls
-  const [lengthMode, setLengthMode] = useState<LengthMode>('content')
+  const [lengthMode, setLengthMode] = useState<LengthMode>('fixed')
   const [lengthChangeInterval, setLengthChangeInterval] = useState(150)
   
   // Basic controls
@@ -259,12 +259,12 @@ function InteractivePlayground() {
                         <input
                           type="radio"
                           name="lengthMode"
-                          value="content"
-                          checked={lengthMode === 'content'}
+                          value="fixed"
+                          checked={lengthMode === 'fixed'}
                           onChange={(e) => setLengthMode(e.target.value as LengthMode)}
                           className="w-4 h-4 text-blue-600"
                         />
-                        <span className="text-sm">固定字數（使用內容長度）</span>
+                        <span className="text-sm">固定字數（預設10個字）</span>
                       </label>
                       <label className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -322,7 +322,7 @@ function InteractivePlayground() {
                   {/* Max Length */}
                   <div className="mb-4">
                     <label className="block text-sm font-medium mb-2">
-                      {lengthMode === 'content' ? 'maxLength（備用字數）' : 'maxLength（最大字數）'}: {maxLength}
+                      {lengthMode === 'fixed' ? 'maxLength（固定字數）' : 'maxLength（最大字數）'}: {maxLength}
                     </label>
                     <input
                       type="range"
@@ -333,8 +333,8 @@ function InteractivePlayground() {
                       className="w-full"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      {lengthMode === 'content' 
-                        ? '固定模式：當內容為空時使用此長度'
+                      {lengthMode === 'fixed' 
+                        ? '固定模式：顯示固定數量的亂碼字元'
                         : '動態模式：字數變化的最大值'
                       }
                     </p>

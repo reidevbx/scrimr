@@ -110,9 +110,9 @@ export function generateElementScrambledText(state: ScrimrElementState, dynamicL
   if (dynamicLength !== undefined) {
     // Use provided dynamic length (from React component)
     displayLength = dynamicLength
-  } else if (options.lengthMode === 'content') {
-    // Content mode - use original content length or maxLength as fallback
-    displayLength = state.originalContent?.length || options.maxLength!
+  } else if (options.lengthMode === 'fixed') {
+    // Fixed mode - use maxLength as fixed length
+    displayLength = options.maxLength!
   } else {
     // Dynamic mode - random length between min and max
     displayLength = Math.floor(Math.random() * (options.maxLength! - options.minLength! + 1)) + options.minLength!
@@ -140,8 +140,8 @@ export function startScrambleAnimation(state: ScrimrElementState): void {
   }
 
   // Initialize current display length
-  if (options.lengthMode === 'content') {
-    state.currentDisplayLength = state.originalContent?.length || options.maxLength
+  if (options.lengthMode === 'fixed') {
+    state.currentDisplayLength = options.maxLength
   } else {
     state.currentDisplayLength = Math.floor(Math.random() * (options.maxLength - options.minLength + 1)) + options.minLength
   }

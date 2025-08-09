@@ -13,7 +13,7 @@ export type TransitionEffect = 'instant' | 'fade' | 'typewriter' | 'decode'
 
 export type FontFamily = 'mono' | 'sans' | 'serif' | 'system'
 
-export type LengthMode = 'content' | 'dynamic'
+export type LengthMode = 'fixed' | 'dynamic'
 
 export interface ScrimrProps {
   className?: string
@@ -51,7 +51,7 @@ export const Scrimr: React.FC<ScrimrProps> = ({
   maxLength = 30,
   randomSpaces = false,
   // Length control mode
-  lengthMode = 'content',
+  lengthMode = 'fixed',
   lengthChangeInterval = 150,
   // Essential props
   characterSet = 'alphanumeric',
@@ -71,8 +71,8 @@ export const Scrimr: React.FC<ScrimrProps> = ({
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [displayText, setDisplayText] = useState('')
   const [displayLength, setDisplayLength] = useState(() => {
-    if (lengthMode === 'content') {
-      return finalText.length || maxLength
+    if (lengthMode === 'fixed') {
+      return maxLength // Use maxLength as the fixed length (default: 30)
     } else {
       // Dynamic mode - start with random length
       return Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength
@@ -85,9 +85,9 @@ export const Scrimr: React.FC<ScrimrProps> = ({
   
   // Handle length changes for dynamic mode
   useEffect(() => {
-    if (lengthMode === 'content') {
-      // Content mode - use finalText length or maxLength as fallback
-      setDisplayLength(finalText.length || maxLength)
+    if (lengthMode === 'fixed') {
+      // Fixed mode - use maxLength as the fixed length
+      setDisplayLength(maxLength)
     } else if (lengthMode === 'dynamic' && isLoading && lengthChangeInterval > 0) {
       // Dynamic mode - continuously change length during loading
       lengthChangeIntervalRef.current = setInterval(() => {
