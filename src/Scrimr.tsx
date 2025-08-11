@@ -41,11 +41,11 @@ export const Scrimr: React.FC<ScrimrProps> = ({
   isLoading,
   children,
   length = 20,
-  speed = 100,
+  speed = 30,
   chars = DEFAULT_CHARS,
   className,
   placeholderLabel = "Loading content",
-  partialUpdateRatio = 0.3,
+  partialUpdateRatio = 0.8,
 }) => {
   const safeLength = clamp(Math.floor(length), 1, 5000);
   const hasChars = typeof chars === "string" && chars.length > 0;
@@ -72,7 +72,7 @@ export const Scrimr: React.FC<ScrimrProps> = ({
     // initial text
     setText(Array.from({ length: safeLength }, () => pick(pool)).join(""));
 
-    const interval = Math.max(prefersReducedMotion ? 400 : 16, speed || 0);
+    const interval = prefersReducedMotion ? 400 : speed;
 
     const tick = () => {
       // pause when tab hidden to save cycles
@@ -99,14 +99,13 @@ export const Scrimr: React.FC<ScrimrProps> = ({
   return (
     <span
       className={cn(
-        "inline-block animate-pulse text-gray-400 select-none font-mono align-baseline",
+        "block animate-pulse text-gray-400 select-none font-mono truncate",
         className
       )}
       role="status"
       aria-live="polite"
       aria-label={placeholderLabel}
       aria-busy="true"
-      style={{ minWidth: `${safeLength}ch` }}
     >
       <span aria-hidden="true">{text}</span>
     </span>
