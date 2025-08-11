@@ -1,85 +1,116 @@
-import React, { useEffect, useState, useRef } from 'react'
-import { cn } from './lib/utils'
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { cn } from "./lib/utils";
 
 interface ScrimrProps {
-  /** Whether to show loading shimmer effect */
-  isLoading: boolean
-  /** Content to display when not loading */
-  children: React.ReactNode
-  /** Length of placeholder text (default: 20) */
-  length?: number
-  /** Update interval in milliseconds (default: 100) */
-  speed?: number
-  /** Custom character set for random text (default: mixed letters, numbers, symbols) */
-  chars?: string
-  /** Additional CSS classes */
-  className?: string
+  isLoading: boolean;
+  children: React.ReactNode;
+  length?: number;            // visible placeholder length
+  speed?: number;             // ms
+  chars?: string;             // character pool
+  className?: string;
+  placeholderLabel?: string;  // a11y label for loading content
+  partialUpdateRatio?: number;// 0~1, portion of chars to mutate per tick
 }
 
-// Default character set: mixed letters, numbers, symbols
-const DEFAULT_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*    '
+const DEFAULT_CHARS =
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*    ";
 
-const generateRandomText = (length: number, chars: string): string => {
-  return Array.from({ length }, () => 
-    chars[Math.floor(Math.random() * chars.length)]
-  ).join('')
+const clamp = (n: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, n));
+
+const pick = (chars: string) =>
+  chars[Math.floor(Math.random() * chars.length)];
+
+/** mutate only some positions for a smoother effect */
+function mutateText(
+  text: string,
+  chars: string,
+  ratio: number
+): string {
+  if (!text) return text;
+  const arr = text.split("");
+  const changes = Math.max(1, Math.floor(arr.length * ratio));
+  for (let i = 0; i < changes; i++) {
+    const idx = Math.floor(Math.random() * arr.length);
+    arr[idx] = pick(chars);
+  }
+  return arr.join("");
 }
 
-/**
- * Simple shimmer text component
- * Shows animated random text while loading
- */
 export const Scrimr: React.FC<ScrimrProps> = ({
   isLoading,
   children,
   length = 20,
   speed = 100,
   chars = DEFAULT_CHARS,
-  className
+  className,
+  placeholderLabel = "Loading content",
+  partialUpdateRatio = 0.3,
 }) => {
-  const [shimmerText, setShimmerText] = useState('')
-  const intervalRef = useRef<ReturnType<typeof setInterval>>()
+  const safeLength = clamp(Math.floor(length), 1, 5000);
+  const hasChars = typeof chars === "string" && chars.length > 0;
+  const pool = hasChars ? chars : DEFAULT_CHARS;
+
+  const [text, setText] = useState<string>("");
+  const timerRef = useRef<number | ReturnType<typeof setInterval> | undefined>(undefined);
+
+  // reduced motion support
+  const prefersReducedMotion = useMemo(() => {
+    if (typeof window === "undefined" || !("matchMedia" in window)) return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
 
   useEffect(() => {
-    if (isLoading) {
-      // Generate initial text
-      setShimmerText(generateRandomText(length, chars))
-      
-      // Start shimmer animation
-      intervalRef.current = setInterval(() => {
-        setShimmerText(generateRandomText(length, chars))
-      }, speed)
-    } else {
-      // Clear interval when not loading
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
+    if (!isLoading) {
+      if (timerRef.current) {
+        clearInterval(timerRef.current as number);
+        timerRef.current = undefined;
       }
+      return;
     }
 
-    // Cleanup on unmount or when isLoading changes
+    // initial text
+    setText(Array.from({ length: safeLength }, () => pick(pool)).join(""));
+
+    const interval = Math.max(prefersReducedMotion ? 400 : 16, speed || 0);
+
+    const tick = () => {
+      // pause when tab hidden to save cycles
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
+      setText((prev) => {
+        if (!prev) {
+          return Array.from({ length: safeLength }, () => pick(pool)).join("");
+        }
+        return mutateText(prev, pool, clamp(partialUpdateRatio, 0.05, 1));
+      });
+    };
+
+    timerRef.current = setInterval(tick, interval);
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
+      if (timerRef.current) {
+        clearInterval(timerRef.current as number);
+        timerRef.current = undefined;
       }
-    }
-  }, [isLoading, length, speed, chars])
+    };
+  }, [isLoading, safeLength, pool, speed, partialUpdateRatio, prefersReducedMotion]);
 
-  if (!isLoading) {
-    return <>{children}</>
-  }
+  if (!isLoading) return <>{children}</>;
 
   return (
     <span
       className={cn(
-        'inline-block animate-pulse text-gray-400 select-none w-full truncate',
+        "inline-block animate-pulse text-gray-400 select-none font-mono align-baseline",
         className
       )}
-      aria-label="Loading content"
+      role="status"
+      aria-live="polite"
+      aria-label={placeholderLabel}
       aria-busy="true"
+      style={{ minWidth: `${safeLength}ch` }}
     >
-      {shimmerText}
+      <span aria-hidden="true">{text}</span>
     </span>
-  )
-}
+  );
+};
 
 export default Scrimr
