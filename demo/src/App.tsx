@@ -12,7 +12,7 @@ function SimpleDemo() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto py-8 px-4 max-w-4xl">
-        <h1 className="text-4xl font-bold text-center mb-2">Scrimr v2.0</h1>
+        <h1 className="text-4xl font-bold text-center mb-2">Scrimr v2.1</h1>
         <p className="text-center text-gray-600 mb-8">簡化版文字shimmer組件 - 輕量級skeleton替代方案</p>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -301,7 +301,7 @@ function SimpleDemo() {
 
         {/* Footer */}
         <div className="mt-12 text-center text-gray-500 text-sm">
-          <p>Scrimr v2.0 - 簡化版文字 shimmer 組件</p>
+          <p>Scrimr v2.1 - 簡化版文字 shimmer 組件</p>
           <p>輕量級替代方案，告別複雜的 skeleton screens</p>
         </div>
       </div>
