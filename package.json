@@ -1,6 +1,6 @@
 {
   "name": "scrimr",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "🎲 A simple React shimmer component that displays animated random text while loading. Lightweight alternative to skeleton screens.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

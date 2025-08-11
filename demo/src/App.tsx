@@ -5,7 +5,7 @@ function SimpleDemo() {
   const [isLoading, setIsLoading] = useState(true)
   const [text, setText] = useState('Hello, this is the new simplified Scrimr!')
   const [length, setLength] = useState(20)
-  const [speed, setSpeed] = useState(100)
+  const [speed, setSpeed] = useState(30)
   const [customChars, setCustomChars] = useState('')
   const [useCustomChars, setUseCustomChars] = useState(false)
 
@@ -47,7 +47,6 @@ function SimpleDemo() {
                     <Scrimr
                       isLoading={isLoading}
                       length={15}
-                      speed={120}
                       className="text-gray-800"
                     >
                       這是一個標題
@@ -61,7 +60,6 @@ function SimpleDemo() {
                     <Scrimr
                       isLoading={isLoading}
                       length={50}
-                      speed={80}
                       className="text-gray-600"
                     >
                       這是一段較長的文字內容，用來展示Scrimr在段落中的效果。新版本更加簡潔高效。
@@ -75,14 +73,13 @@ function SimpleDemo() {
                     <Scrimr
                       isLoading={isLoading}
                       length={60}
-                      speed={100}
                       className="text-gray-700"
                     >
                       這是一段很長的文字內容，會被截斷並顯示省略號，展示 Scrimr 內建 truncate 的效果
                     </Scrimr>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    💡 父層容器設定寬度，Scrimr 內建 <code className="bg-gray-100 px-1 rounded">truncate</code> 自動截斷
+                    💡 Scrimr 會根據父層容器寬度自動截斷，<code className="bg-gray-100 px-1 rounded">length</code> 只控制載入時字符數量
                   </p>
                 </div>
 
@@ -92,7 +89,6 @@ function SimpleDemo() {
                     <Scrimr
                       isLoading={isLoading}
                       length={8}
-                      speed={100}
                       className="text-white"
                     >
                       點擊我
@@ -106,7 +102,6 @@ function SimpleDemo() {
                     <Scrimr
                       isLoading={isLoading}
                       length={6}
-                      speed={150}
                       chars="0123456789"
                       className="text-green-600 font-bold"
                     >
@@ -198,14 +193,14 @@ function SimpleDemo() {
                     </label>
                     <input
                       type="range"
-                      min="50"
-                      max="500"
-                      step="10"
+                      min="10"
+                      max="50"
+                      step="5"
                       value={speed}
                       onChange={(e) => setSpeed(Number(e.target.value))}
                       className="w-full"
                     />
-                    <p className="text-xs text-gray-500 mt-1">預設 100ms，數值越小越快</p>
+                    <p className="text-xs text-gray-500 mt-1">範圍 10-50ms，數值越小越快</p>
                   </div>
 
                   {/* Character Set */}
