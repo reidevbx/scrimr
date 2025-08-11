@@ -1,7 +1,7 @@
 {
   "name": "scrimr",
-  "version": "1.1.0",
-  "description": "🎲 A React loading component that replaces skeleton screens with dynamic scrambled text and shimmer effects. Features dual API (components + attributes) with 3-parameter simplicity.",
+  "version": "2.1.0",
+  "description": "🎲 A simple React shimmer component that displays animated random text while loading. Lightweight alternative to skeleton screens.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -17,14 +17,12 @@
     "skeleton",
     "shimmer",
     "animation",
-    "shadcn",
     "typescript",
     "scrambled-text",
     "loading-effect",
     "ui-components",
     "tailwindcss",
-    "accessibility",
-    "dual-api"
+    "lightweight"
   ],
   "author": "Rei Huang",
   "license": "MIT",

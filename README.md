@@ -4,22 +4,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
-🎲 A React loading component that replaces skeleton screens with **dynamic scrambled text** and **shimmer effects**. Features **dual API** (components + attributes) with **3-parameter simplicity**.
-
-## 🎮 [Live Demo](https://scrimr.vercel.app/)
-
-Experience all features in our interactive playground: [https://scrimr.vercel.app/](https://scrimr.vercel.app/)
+🎲 A **simple** React shimmer component that displays animated random text while loading. Lightweight alternative to skeleton screens.
 
 ## ✨ Features
 
-- 🎲 **Dynamic Scrambled Text** - Continuously changing random characters during loading
-- ✨ **Shimmer Effect** - Text-based gradient shimmer animation with customizable colors
-- 🔄 **Dual API Support** - Use as React components OR HTML attributes
-- 🎯 **3-Parameter Simplicity** - Control everything with just `minLength`, `maxLength`, `randomSpaces`
-- 🎭 **Multiple Transition Effects** - Instant, fade, typewriter, and decode animations  
-- 🎨 **shadcn/ui Compatible** - Designed to work seamlessly with Tailwind CSS and shadcn components
-- ⚡ **Speed Controls** - Adjust scramble speed and shimmer animation speed
-- 🌈 **Multi-color Gradients** - Support for 1-3 color gradients
+- 🎲 **Animated Random Text** - Continuously changing random characters during loading
+- ⚡ **Ultra Lightweight** - Only ~84 lines of code, 1.65KB ESM bundle
+- 🎯 **Simple API** - Just 5 props to control everything
+- ✂️ **Text Truncation** - Built-in support for single-line text with ellipsis
+- 🎨 **Tailwind Compatible** - Works seamlessly with Tailwind CSS classes
 - ♿ **Accessible** - ARIA attributes and screen reader friendly
 - 🎯 **TypeScript Support** - Fully typed for better developer experience
 - 📦 **Zero Config** - Works out of the box with sensible defaults
@@ -36,475 +29,204 @@ pnpm add scrimr
 
 ## 🚀 Quick Start
 
-### Method 1: Component API (React)
-
 ```tsx
+import { useState } from 'react'
 import { Scrimr } from 'scrimr'
 
 function MyComponent() {
   const [isLoading, setIsLoading] = useState(true)
   
   return (
-    <Scrimr 
-      isLoading={isLoading}
-      minLength={10}
-      maxLength={20}
-      randomSpaces={true}
-    >
+    <Scrimr isLoading={isLoading}>
       Hello, World!
     </Scrimr>
   )
 }
 ```
 
-### Method 2: Attribute API (HTML + JS)
-
-```html
-<!-- HTML -->
-<p 
-  data-scrimr="true"
-  data-scrimr-min-length="10"
-  data-scrimr-max-length="20" 
-  data-scrimr-random-spaces="true"
->
-  Hello, World!
-</p>
-
-<script>
-// JavaScript
-import { ScrimrAPI } from 'scrimr'
-ScrimrAPI.init() // Auto-scan and initialize
-</script>
-```
-
-## 🎯 Simple Length Control
-
-### Fixed Length Mode (default)
-```tsx
-<Scrimr 
-  length={15}         // Fixed scrambled text length (default: 10)
-  randomSpaces={true} // Insert random spaces for realism
->
-  Your Content
-</Scrimr>
-```
-
-### Dynamic Length Mode
-```tsx
-<Scrimr 
-  lengthMode="dynamic"
-  minLength={5}       // Minimum scrambled text length
-  maxLength={25}      // Maximum scrambled text length  
-  randomSpaces={true} // Insert random spaces for realism
->
-  Your Content
-</Scrimr>
-```
-
 ## 📚 API Reference
 
-### 🔸 Component API
-
-#### Scrimr (Base Component)
-
-The core component with **3-parameter simplicity**:
-
-```tsx
-// ✨ Simple - just 3 core parameters
-<Scrimr
-  isLoading={true}
-  minLength={10}
-  maxLength={30}
-  randomSpaces={false}
->
-  {children}
-</Scrimr>
-
-// 🎨 Advanced - full customization
-<Scrimr
-  isLoading={true}
-  minLength={15}
-  maxLength={25}
-  randomSpaces={true}
-  characterSet="alphanumeric"
-  transitionEffect="decode"
-  enableShimmer={true}
-  shimmerColors={['#9333ea', '#ec4899']}
-  shimmerSpeed={2}
-  scrambleInterval={50}
-  fontFamily="mono"
->
-  {children}
-</Scrimr>
-```
-
-### ScrimrText
-
-Pre-configured for text content with semantic HTML elements.
-
-```tsx
-<ScrimrText
-  as="h1"
-  isLoading={isLoading}
-  className="text-2xl font-bold"
->
-  {title}
-</ScrimrText>
-```
-
-### ScrimrButton
-
-Button component with loading state.
-
-```tsx
-<ScrimrButton
-  isLoading={isLoading}
-  onClick={handleClick}
-  buttonClassName="bg-primary text-primary-foreground"
->
-  Submit
-</ScrimrButton>
-```
-
-### ScrimrCard
-
-Card component for loading states.
-
-```tsx
-<ScrimrCard
-  isLoading={isLoading}
-  title={cardTitle}
-  description={cardDescription}
-  titleLength={25}
-  descriptionLength={80}
-/>
-```
-
-### 🔹 Attribute API
-
-Use Scrimr with **any HTML element** using data attributes:
-
-```html
-<!-- ✨ Simple - just 3 core parameters -->
-<h1 data-scrimr="true" data-scrimr-min-length="10" data-scrimr-max-length="20">
-  Page Title
-</h1>
-
-<!-- 🎨 Advanced - full customization -->
-<p 
-  data-scrimr="true"
-  data-scrimr-min-length="15"
-  data-scrimr-max-length="25"
-  data-scrimr-random-spaces="true"
-  data-scrimr-character-set="alphanumeric"
-  data-scrimr-shimmer-colors='["#9333ea", "#ec4899"]'
-  data-scrimr-shimmer-speed="2"
-  data-scrimr-scramble-interval="50"
-  data-scrimr-font-family="mono"
->
-  Content text
-</p>
-
-<!-- 📝 JSON Configuration -->
-<div data-scrimr='{
-  "minLength": 10,
-  "maxLength": 30,
-  "randomSpaces": true,
-  "shimmerColors": ["#10b981", "#34d399"]
-}'>
-  Content
-</div>
-```
-
-#### JavaScript API
-
-```javascript
-import { ScrimrAPI } from 'scrimr'
-
-// Initialize all data-scrimr elements
-ScrimrAPI.init()
-
-// Control specific elements
-ScrimrAPI.initElement('#my-element', { minLength: 10, maxLength: 20 })
-ScrimrAPI.complete('#my-element', 'Final text')
-ScrimrAPI.destroy('#my-element')
-ScrimrAPI.destroyAll()
-
-// Batch operations
-ScrimrAPI.batch('.loading-items', 'init')
-```
-
-## Props
-
-### ScrimrProps
+### Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `isLoading` | `boolean` | `true` | Controls loading state |
-| `text` | `string` | - | Final text to display |
-| `length` | `number` | `10` | Fixed length for scrambled text (default: 10) |
-| `lengthMode` | `LengthMode` | `'fixed'` | Length control mode |
-| `minLength` | `number` | `1` | Minimum length for dynamic mode |
-| `lengthChangeInterval` | `number` | `150` | Length change interval in ms (dynamic mode) |
-| `characterSet` | `CharacterSet` | `'alphanumeric'` | Character pool for scrambling |
-| `scrambleInterval` | `number` | `50` | Update interval in ms |
-| `transitionEffect` | `TransitionEffect` | `'decode'` | Transition animation type |
-| `transitionDuration` | `number` | `1000` | Transition duration in ms |
-| `enableShimmer` | `boolean` | `true` | Enable shimmer effect |
-| `shimmerColors` | `string[]` | `['#9333ea', '#ec4899', '#3b82f6']` | Gradient colors (2-3 colors) |
-| `shimmerSpeed` | `number` | `3` | Shimmer animation speed (seconds) |
-| `shimmerSize` | `number` | `200` | Gradient size percentage (100-500%) |
-| `variant` | `'text' \| 'inline' \| 'block'` | `'inline'` | Display variant |
-| `preserveSpaces` | `boolean` | `true` | Preserve space positions |
-| `fontFamily` | `FontFamily` | `'mono'` | Font family style |
-| `ariaLabel` | `string` | `'Loading...'` | Screen reader text |
+| `isLoading` | `boolean` | **required** | Controls loading state |
+| `children` | `React.ReactNode` | **required** | Content to display when not loading |
+| `length` | `number` | `20` | Length of placeholder text |
+| `speed` | `number` | `100` | Update interval in milliseconds |
+| `chars` | `string` | Mixed set | Custom character set for random text |
+| `className` | `string` | - | Additional CSS classes |
 
-### Character Sets
+### Default Character Set
 
-- `'letters'` - Uppercase and lowercase letters
-- `'numbers'` - Digits 0-9
-- `'symbols'` - Special characters
-- `'alphanumeric'` - Letters and numbers
-- `'all'` - All character types
-
-### Font Families
-
-- `'mono'` - Monospace font (default) - Best for code/technical content
-- `'sans'` - Sans-serif font - Clean and modern
-- `'serif'` - Serif font - Traditional and elegant
-- `'system'` - System default font
-
-### Length Modes
-
-- `'fixed'` - Fixed length (default: 10 characters, customizable)
-- `'dynamic'` - Length randomly jumps between `minLength` and `maxLength`
-
-### Display Variants
-
-- `'text'` - Plain text with no additional styling
-- `'inline'` - Inline element that flows with text (default)
-- `'block'` - Block element that takes full width and stands alone
-
-### Transition Effects
-
-- `'instant'` - Immediate transition
-- `'fade'` - Fade in/out effect
-- `'typewriter'` - Character by character reveal
-- `'decode'` - Gradual decode from scrambled to real text
-
-## Hooks
-
-### useScrimr
-
-Hook for managing loading states.
-
-```tsx
-const { isLoading, startLoading, stopLoading } = useScrimr({
-  defaultLoading: true,
-  loadingDuration: 3000,
-  onLoadingComplete: () => console.log('Done!')
-})
-```
+The default character set includes:
+- Letters: `a-z`, `A-Z`
+- Numbers: `0-9`
+- Symbols: `!@#$%^&*`
+- Spaces for realistic text appearance
 
 ## Examples
 
-### With API Data
+### Basic Usage
 
 ```tsx
-function UserProfile() {
-  const [user, setUser] = useState(null)
-  const { isLoading, stopLoading } = useScrimr()
-
-  useEffect(() => {
-    fetch('/api/user')
-      .then(res => res.json())
-      .then(data => {
-        setUser(data)
-        stopLoading()
-      })
-  }, [])
-
-  return (
-    <div>
-      <ScrimrText as="h2" isLoading={isLoading}>
-        {user?.name}
-      </ScrimrText>
-      <ScrimrText as="p" isLoading={isLoading}>
-        {user?.email}
-      </ScrimrText>
-    </div>
-  )
-}
-```
-
-### Custom Styling with Tailwind
-
-```tsx
-<Scrimr
-  isLoading={isLoading}
-  className="text-lg text-green-500"
-  fontFamily="mono"
-  enableShimmer={true}
-  shimmerColors={['#10b981', '#34d399', '#6ee7b7']}
-  shimmerSpeed={2} // Faster shimmer for hacker effect
->
-  {hackerText}
+<Scrimr isLoading={isLoading}>
+  Your content here
 </Scrimr>
 ```
 
-### Shimmer Customization Examples
+### Custom Length and Speed
 
 ```tsx
-{/* Fast emergency alert - tight gradient */}
 <Scrimr 
-  shimmerSpeed={1}
-  shimmerSize={120}
-  shimmerColors={['#dc2626', '#ef4444']}
   isLoading={isLoading}
+  length={30}
+  speed={50}
 >
-  SYSTEM ERROR!
-</Scrimr>
-
-{/* Elegant effect - wide gradient */}
-<Scrimr 
-  shimmerSpeed={6}
-  shimmerSize={300}
-  shimmerColors={['#d4af37', '#ffd700', '#ffed4e']}
-  isLoading={isLoading}
->
-  Premium Content
-</Scrimr>
-
-{/* Professional data loading */}
-<Scrimr 
-  shimmerSpeed={4}
-  shimmerSize={150}
-  shimmerColors={['#6b7280', '#9ca3af']}
-  isLoading={isLoading}
->
-  Loading data...
+  Longer text with faster animation
 </Scrimr>
 ```
 
-### Length Mode Examples
+### Custom Character Set
 
 ```tsx
-{/* Fixed mode - uses fixed length (default: 10) */}
+{/* Numbers only */}
 <Scrimr 
-  lengthMode="fixed"
-  length={15}  // Custom fixed length
   isLoading={isLoading}
+  length={8}
+  chars="0123456789"
 >
-  Your Content Here
+  $1,234.56
 </Scrimr>
 
-{/* Dynamic mode - jumping length */}
+{/* Custom text */}
 <Scrimr 
-  lengthMode="dynamic"
-  minLength={3}
-  maxLength={20}  // Maximum length for dynamic mode
-  lengthChangeInterval={120}
   isLoading={isLoading}
+  length={12}
+  chars="LOADING."
 >
-  Dynamic Length Text
-</Scrimr>
-
-{/* Dynamic counter with fast changes */}
-<Scrimr 
-  lengthMode="dynamic"
-  minLength={1}
-  maxLength={8}
-  lengthChangeInterval={80}
-  characterSet="numbers"
-  isLoading={isLoading}
->
-  12345
+  Please wait...
 </Scrimr>
 ```
 
-### Display Variant Examples
+### Text Truncation
+
+The component includes built-in `truncate` support. Just set a width on the parent container:
 
 ```tsx
-{/* Text variant - pure text, no styling */}
-<p>
-  This is a sentence with <Scrimr variant="text" isLoading={isLoading}>loading text</Scrimr> inline.
-</p>
-
-{/* Inline variant - flows with text (default) */}
-<p>
-  This is a sentence with <Scrimr variant="inline" isLoading={isLoading}>loading content</Scrimr> inline.
-</p>
-
-{/* Block variant - full width, standalone */}
-<div>
-  <Scrimr variant="block" isLoading={isLoading}>
-    This takes the full width
+{/* Container with width constraint */}
+<div className="w-48">
+  <Scrimr isLoading={isLoading} length={50}>
+    This is a very long text that will be truncated with ellipsis
   </Scrimr>
 </div>
 ```
 
-### Different Font Styles
+### Styled Examples
 
 ```tsx
-{/* Technical/Code style */}
-<Scrimr fontFamily="mono" isLoading={isLoading}>
-  API_KEY_12345
-</Scrimr>
+{/* Title */}
+<h1 className="text-2xl font-bold">
+  <Scrimr isLoading={isLoading} className="text-blue-600">
+    Page Title
+  </Scrimr>
+</h1>
 
-{/* Modern UI style */}
-<Scrimr fontFamily="sans" isLoading={isLoading}>
-  Welcome to Dashboard
-</Scrimr>
+{/* Button */}
+<button className="bg-blue-500 text-white px-4 py-2 rounded">
+  <Scrimr isLoading={isLoading} length={8}>
+    Submit
+  </Scrimr>
+</button>
 
-{/* Elegant content */}
-<Scrimr fontFamily="serif" isLoading={isLoading}>
-  Article Title Here
-</Scrimr>
+{/* Paragraph */}
+<p className="text-gray-700">
+  <Scrimr isLoading={isLoading} length={40} speed={80}>
+    This is a paragraph of text that shows how Scrimr works in longer content.
+  </Scrimr>
+</p>
 ```
 
-### Dashboard Metrics
+### Loading States
 
 ```tsx
-function MetricCard({ metric, value, isLoading }) {
+function DataComponent() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    fetchData().then(result => {
+      setData(result)
+      setIsLoading(false)
+    })
+  }, [])
+
   return (
-    <div className="p-4 border rounded-lg">
-      <p className="text-sm text-gray-500">{metric}</p>
-      <p className="text-2xl font-bold">
-        <Scrimr
-          isLoading={isLoading}
-          characterSet="numbers"
-          length={value?.toString().length || 5}
-        >
-          {value}
-        </Scrimr>
-      </p>
+    <div>
+      <Scrimr isLoading={isLoading}>
+        {data?.title}
+      </Scrimr>
     </div>
   )
 }
 ```
 
-## Tailwind CSS Configuration
+## Why Scrimr?
 
-For the shimmer effect to work properly, ensure your Tailwind config includes the necessary animation:
+### vs. Skeleton Screens
 
-```js
-// tailwind.config.js
-module.exports = {
-  theme: {
-    extend: {
-      animation: {
-        shimmer: 'shimmer 3s ease-in-out infinite',
-      },
-      keyframes: {
-        shimmer: {
-          '0%': { backgroundPosition: '200% 50%' },
-          '100%': { backgroundPosition: '-200% 50%' },
-        },
-      },
-    },
-  },
+- **More Engaging**: Dynamic text is more interesting than static gray boxes
+- **Context Aware**: Shows text-like content instead of generic shapes  
+- **Smaller Bundle**: No complex skeleton layouts needed
+- **Flexible**: Works with any text content automatically
+
+### vs. Other Libraries
+
+- **Simpler**: Just 5 props vs. dozens of configuration options
+- **Lighter**: 1.65KB vs. 10KB+ for most alternatives
+- **Focused**: Does one thing well instead of trying to do everything
+- **Modern**: Built with modern React patterns and TypeScript
+
+## Tailwind CSS
+
+Scrimr works perfectly with Tailwind CSS. The component uses `cn()` utility for class merging:
+
+```tsx
+<Scrimr 
+  isLoading={isLoading}
+  className="text-green-500 font-mono text-lg"
+>
+  System Status: Online
+</Scrimr>
+```
+
+## TypeScript
+
+Scrimr is built with TypeScript and provides full type safety:
+
+```tsx
+interface ScrimrProps {
+  isLoading: boolean
+  children: React.ReactNode
+  length?: number
+  speed?: number
+  chars?: string
+  className?: string
 }
 ```
+
+## Bundle Size
+
+- **ESM**: 1.65KB
+- **CJS**: 2.83KB  
+- **Dependencies**: Only `clsx` and `tailwind-merge`
+
+## Browser Support
+
+Scrimr works in all modern browsers that support:
+- ES2015+ 
+- React 18+
+- CSS animations
 
 ## License
 
@@ -513,3 +235,17 @@ MIT
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Changelog
+
+### v2.1.0
+- Added built-in text truncation support
+- Improved container width handling
+- Enhanced demo examples
+
+### v2.0.0
+- Complete rewrite for simplicity
+- Reduced from 1000+ lines to ~84 lines
+- Simplified API to 5 essential props
+- Removed complex state management
+- 80% smaller bundle size
