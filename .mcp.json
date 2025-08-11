@@ -1,0 +1,23 @@
+{
+    "mcpServers": {
+      "supabase": {
+        "command": "npx",
+        "args": [
+          "-y",
+          "@supabase/mcp-server-supabase@latest",
+          "--project-ref=hrardgnsjaunaltzssnm"
+        ],
+        "env": {
+          "SUPABASE_ACCESS_TOKEN": "sbp_c50dd0af268e6e6cf62d17be3fb001f52dc68541"
+        }
+      },
+      "context7": {
+        "command": "npx",
+        "args": ["@upstash/context7-mcp"],
+        "env": {
+          "PROJECT_ID": "hrardgnsjaunaltzssnm",
+          "MEMORY_SCOPE": "isales"
+        }
+      }
+    }
+  }
