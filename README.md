@@ -13,7 +13,6 @@
 - 🎯 **Simple API** - Just 5 props to control everything
 - ✂️ **Text Truncation** - Built-in support for single-line text with ellipsis
 - 🎨 **Tailwind Compatible** - Works seamlessly with Tailwind CSS classes
-- ♿ **Accessible** - ARIA attributes and screen reader friendly
 - 🎯 **TypeScript Support** - Fully typed for better developer experience
 - 📦 **Zero Config** - Works out of the box with sensible defaults
 
@@ -237,6 +236,24 @@ MIT
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Changelog
+
+### v2.2.2
+- Fixed npm package repository links
+- Updated repository URL from `reihuang/scrimr` to `reidevbx/scrimr`
+
+### v2.2.1
+- Improved performance with speed parameter adjustments
+- Enhanced user experience with refined speed ranges and display text
+- Updated demo project dependencies
+
+### v2.2.0
+- Added `partialUpdateRatio` parameter for smoother animations
+- Added `placeholderLabel` parameter for accessibility support
+- Added `prefers-reduced-motion` system preference support
+- Auto-pause animations when tab is hidden for performance
+- Precise width control using `minWidth: ${length}ch`
+- Full ARIA attributes support
+- Optimized timer management and memory usage
 
 ### v2.1.0
 - Added built-in text truncation support
